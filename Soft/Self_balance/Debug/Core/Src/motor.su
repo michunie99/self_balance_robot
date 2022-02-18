@@ -1,4 +1,8 @@
 motor.c:11:6:motor_init	16	static
-motor.c:27:6:motor_calculate_speed	24	static
-motor.c:53:6:motor_update_count	16	static
-motor.c:60:6:motor_set_speed	16	static
+motor.c:35:6:motor_calculate_speed	24	static
+motor.c:61:6:motor_update_count	16	static
+motor.c:69:6:motor_set_speed	16	static
+motor.c:76:6:motor_set_position	16	static
+motor.c:81:6:motor_choose_mode	16	static
+motor.c:98:6:motor_calculate_position	24	static
+motor.c:120:6:motor_reset_position	16	static

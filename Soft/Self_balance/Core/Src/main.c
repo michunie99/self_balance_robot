@@ -104,6 +104,7 @@ int main(void)
 
   // initialize motor with PID
   motor_init(&motor_A, &htim4); //first init motor
+  motor_choose_mode(&motor_A, POS);
   max14870_init(&(motor_A.motor_board), &htim3, TIM_CHANNEL_1,
 		  EN_A_Pin, GPIOA, DIR_A_Pin, GPIOB ); //second init board
   pid_init(&(motor_A.pid_controller),
@@ -112,11 +113,11 @@ int main(void)
 
   int speed_table[] = {50, 200};
   int i = 0;
-  uint32_t time_tick = HAL_GetTick();
-  uint32_t switch_time = 5000;
-  uint8_t button = 1;
+//  uint32_t time_tick = HAL_GetTick();
+//  uint32_t switch_time = 5000;
+//  uint8_t button = 1;
 
-  motor_set_speed(&motor_A, speed_table[i]);
+ // motor_set_speed(&motor_A, speed_table[i]);
 
   /* USER CODE END 2 */
 
@@ -125,9 +126,8 @@ int main(void)
   while (1)
   {
 	if(!HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin))
-		motor_set_speed(&motor_A, speed_table[1]);
-	else
-		motor_set_speed(&motor_A, speed_table[0]);
+		motor_reset_position(&motor_A);
+
 	HAL_Delay(100);
     /* USER CODE END WHILE */
 
@@ -400,7 +400,10 @@ static void MX_GPIO_Init(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim->Instance == TIM9){
-		motor_calculate_speed(&motor_A);
+		if(motor_A.mode == SPEED)
+			motor_calculate_speed(&motor_A);
+		else if(motor_A.mode == POS)
+			motor_calculate_position(&motor_A);
 	}
 }
 /* USER CODE END 4 */
